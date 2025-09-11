@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Sushruth Cipher</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" href="https://pyscript.net/releases/2025.7.3/core.css">
+    <script type="module" src="https://pyscript.net/releases/2025.7.3/core.js"></script>
+</head>
+<body>
+    <h1>Welcome to Cipher Message Platform</h1>
+
+    <h3>Encrypt a Message</h3>
+    <input id="encrypt-input" type="text" placeholder="Enter plain text">
+    <button py-click="encrypt_message">Encrypt</button>
+    <p id="encrypt-output"></p>
+
+    <h3>Decrypt a Message</h3>
+    <input id="decrypt-input" type="text" placeholder="Enter cipher text">
+    <button py-click="decrypt_message">Decrypt</button>
+    <p id="decrypt-output"></p>
+
+    <py-script>
+        import random
+        import string
+        from js import document
+
+        # Define character set and key
+        chars = " " + string.punctuation + string.digits + string.ascii_letters
+        chars = list(chars)
+        key = chars.copy()
+        random.seed(42) 
+        random.shuffle(key)
+
+        def encrypt_message(event):
+            plain_text = document.getElementById("encrypt-input").value
+            cipher_text = ""
+            for letter in plain_text:
+                if letter in chars:
+                    index = chars.index(letter)
+                    cipher_text += key[index]
+                else:
+                    cipher_text += letter
+            document.getElementById("encrypt-output").innerText = f"Cipher text: {cipher_text}"
+
+        def decrypt_message(event):
+            cipher_text = document.getElementById("decrypt-input").value
+            plain_text = ""
+            for letter in cipher_text:
+                if letter in key:
+                    index = key.index(letter)
+                    plain_text += chars[index]
+                else:
+                    plain_text += letter
+            document.getElementById("decrypt-output").innerText = f"Original text: {plain_text}"
+    </py-script>
+</body>
+</html>
